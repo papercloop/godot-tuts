@@ -20,11 +20,6 @@ uv1_triplanar = true
 
 [node name="main" type="Node3D" unique_id=2112397449]
 
-[node name="Label3D2" type="Label3D" parent="." unique_id=1188006304]
-transform = Transform3D(1, 0, 0, 0, 0.997917, 0.06451106, 0, -0.06451106, 0.997917, 0, 0.7260027, 1.7935035)
-text = "try it out
-dev.papercloop.com"
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=154014319]
 environment = SubResource("Environment_h2yge")
 
@@ -43,5 +38,10 @@ transform = Transform3D(1, 0, 0, 0, 0.7949657, 0.6066544, 0, -0.6066544, 0.79496
 [node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=1962086293]
 
 [node name="Label3D" type="Label3D" parent="." unique_id=102923928]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33420134, 1.987128)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33420134, 0.85927653)
 text = "code: github.com/papercloop/godot-tuts"
+
+[node name="Label3D2" type="Label3D" parent="." unique_id=1188006304]
+transform = Transform3D(1, 0, 0, 0, 0.997917, 0.06451106, 0, -0.06451106, 0.997917, 0, 0.7260027, 0.66565204)
+text = "try it out
+dev.papercloop.com"
