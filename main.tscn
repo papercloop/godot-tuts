@@ -40,4 +40,9 @@ transform = Transform3D(1, 0, 0, 0, 0.7949657, 0.6066544, 0, -0.6066544, 0.79496
 [node name="Label3D" type="Label3D" parent="Node3D" unique_id=1188006304]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26839447, -1.8797455)
 text = "exciting game
-goes here"
+goes here
+dev.papercloop.com"
+
+[node name="Label3D" type="Label3D" parent="." unique_id=102923928]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33420134, 0)
+text = "code: github.com/papercloop/godot-tuts"
