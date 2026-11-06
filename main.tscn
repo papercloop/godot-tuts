@@ -1,17 +1,36 @@
 [gd_scene format=3 uid="uid://56ubj0ejwbj1"]
 
-[ext_resource type="Texture2D" uid="uid://cp0jar8wltmxm" path="res://PNG/Dark/texture_08.png" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://2hwncca02f2y" path="res://PNG/Dark/texture_13.png" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://bf4sdh3imv3pj" path="res://PNG/Light/texture_13.png" id="2_0xm2m"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xm2m"]
 albedo_texture = ExtResource("1_ig7tw")
 uv1_triplanar = true
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
+albedo_texture = ExtResource("1_ig7tw")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1bvp3"]
+albedo_texture = ExtResource("2_0xm2m")
+uv1_triplanar = true
+
 [node name="Sandbox" type="Node3D" unique_id=2112397449]
 
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1038073006]
+[node name="Floor" type="CSGBox3D" parent="." unique_id=1038073006]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.024199963, -0.1401403, 0.65765905)
-size = Vector3(9.098633, 0.27331543, 9.461548)
+size = Vector3(30, 0.273, 30)
 material = SubResource("StandardMaterial3D_0xm2m")
+
+[node name="Wall" type="CSGBox3D" parent="." unique_id=755839132]
+transform = Transform3D(0.0074552363, 0, -0.9999722, 0, 1, 0, 0.9999722, 0, 0.0074552363, -6.947798, 1.465927, 0)
+size = Vector3(10, 3, 1)
+material = SubResource("StandardMaterial3D_h2yge")
+
+[node name="CrouchCheck" type="CSGBox3D" parent="." unique_id=955197162]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0917387, 2, -5.1957903)
+size = Vector3(7, 2, 1)
+material = SubResource("StandardMaterial3D_1bvp3")
 
 [node name="Node3D" type="Node3D" parent="." unique_id=1228378979]
 transform = Transform3D(1, 0, 0, 0, 0.7949657, 0.6066544, 0, -0.6066544, 0.7949657, 0, 2.8081136, 4.0799747)
