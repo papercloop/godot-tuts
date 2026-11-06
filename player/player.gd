@@ -43,19 +43,26 @@ var player_state: PlayerState = PlayerState.IDLE_STAND
 
 
 func _ready() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	return
 
 
 
 
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("quit"):
-		get_tree().quit()
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 	if event is InputEventMouseMotion:
 		rotate_y(deg_to_rad(-event.relative.x) * mouse_sensitivity)
 		head.rotate_x(deg_to_rad(-event.relative.y) * mouse_sensitivity)
 		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-85), deg_to_rad(85))
+
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
+				var viewport_size = get_viewport().get_visible_rect().size
+				get_viewport().warp_mouse(Vector2(viewport_size.x / 2, viewport_size.y / 2))
+				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 
@@ -169,7 +176,3 @@ func updateCamera(_delta: float) -> void:
 	var headbobPosition = headbob.getBobLocation(eyes, _delta, moving, lerp_speed)
 	eyes.position.x = headbobPosition.x
 	eyes.position.y = headbobPosition.y
-
-
-
-
