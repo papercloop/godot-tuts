@@ -6,7 +6,7 @@
 albedo_texture = ExtResource("1_ig7tw")
 uv1_triplanar = true
 
-[node name="main" type="Node3D" unique_id=2112397449]
+[node name="Sandbox" type="Node3D" unique_id=2112397449]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1038073006]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.024199963, -0.1401403, 0.65765905)
