@@ -1,7 +1,26 @@
 [gd_scene format=3 uid="uid://56ubj0ejwbj1"]
 
-[ext_resource type="Texture2D" uid="uid://2hwncca02f2y" path="res://PNG/Dark/texture_13.png" id="1_ig7tw"]
-[ext_resource type="Texture2D" uid="uid://bf4sdh3imv3pj" path="res://PNG/Light/texture_13.png" id="2_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://2hwncca02f2y" path="res://assets/KenneyPrototypeTextures/Dark/texture_13.png" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://ctnhp07prrw0i" path="res://player/player.tscn" id="1_kek77"]
+[ext_resource type="Texture2D" uid="uid://bf4sdh3imv3pj" path="res://assets/KenneyPrototypeTextures/Light/texture_13.png" id="2_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://btobcoktyn0uu" path="res://assets/KenneyPrototypeTextures/Green/texture_13.png" id="3_lquwl"]
+[ext_resource type="Texture2D" uid="uid://b4i56qcglk5qi" path="res://assets/KenneyPrototypeTextures/Orange/texture_05.png" id="4_7mycd"]
+[ext_resource type="Texture2D" uid="uid://ckq4tim1xarq8" path="res://assets/KenneyPrototypeTextures/Purple/texture_11.png" id="5_272bh"]
+[ext_resource type="Texture2D" uid="uid://b5seonym702q8" path="res://assets/KenneyPrototypeTextures/Red/texture_09.png" id="6_272bh"]
+[ext_resource type="Texture2D" uid="uid://c86sx2e525id2" path="res://assets/KenneyPrototypeTextures/Light/texture_08.png" id="7_5vw27"]
+[ext_resource type="FontFile" uid="uid://crgld072qybje" path="res://assets/fonts/GoogleSans-VariableFont_GRAD,opsz,wght.ttf" id="8_5vw27"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kek77"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_4c57u"]
+sky_material = SubResource("ProceduralSkyMaterial_kek77")
+
+[sub_resource type="Environment" id="Environment_efxa6"]
+background_mode = 2
+sky = SubResource("Sky_4c57u")
+glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xm2m"]
 albedo_texture = ExtResource("1_ig7tw")
@@ -17,23 +36,37 @@ uv1_triplanar = true
 
 [node name="Sandbox" type="Node3D" unique_id=2112397449]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1269758178]
+environment = SubResource("Environment_efxa6")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=134188385]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." unique_id=1648918138 instance=ExtResource("1_kek77")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0014130473, 3.0264611)
+
 [node name="Floor" type="CSGBox3D" parent="." unique_id=1038073006]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.024199963, -0.1401403, 0.65765905)
+use_collision = true
 size = Vector3(30, 0.273, 30)
 material = SubResource("StandardMaterial3D_0xm2m")
 
 [node name="Wall" type="CSGBox3D" parent="." unique_id=755839132]
 transform = Transform3D(0.0074552363, 0, -0.9999722, 0, 1, 0, 0.9999722, 0, 0.0074552363, -6.947798, 1.465927, 0)
+use_collision = true
 size = Vector3(10, 3, 1)
 material = SubResource("StandardMaterial3D_h2yge")
 
 [node name="CrouchCheck" type="CSGBox3D" parent="." unique_id=955197162]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0917387, 2, -5.1957903)
+use_collision = true
 size = Vector3(7, 2, 1)
 material = SubResource("StandardMaterial3D_1bvp3")
 
 [node name="Node3D" type="Node3D" parent="." unique_id=1228378979]
 transform = Transform3D(1, 0, 0, 0, 0.7949657, 0.6066544, 0, -0.6066544, 0.7949657, 0, 2.8081136, 4.0799747)
+visible = false
 
 [node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=1962086293]
 
@@ -45,3 +78,31 @@ text = "code: github.com/papercloop/godot-tuts"
 transform = Transform3D(1, 0, 0, 0, 0.997917, 0.06451106, 0, -0.06451106, 0.997917, 0, 0.7260027, 0.66565204)
 text = "try it out
 dev.papercloop.com"
+
+[node name="KenneyExhibit" type="Node3D" parent="." unique_id=648307875]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.4837465, 1.2894988, 0)
+
+[node name="Sprite3D" type="Sprite3D" parent="KenneyExhibit" unique_id=188055687]
+transform = Transform3D(0.0005702247, 0, -0.1349988, 0, 0.135, 0, 0.1349988, 0, 0.0005702247, 0, 0.42333364, -3.7062638)
+texture = ExtResource("3_lquwl")
+
+[node name="Sprite3D2" type="Sprite3D" parent="KenneyExhibit" unique_id=1980131335]
+transform = Transform3D(0.0005702247, 0, -0.1349988, 0, 0.135, 0, 0.1349988, 0, 0.0005702247, 0, 0.42333364, -2.0255456)
+texture = ExtResource("4_7mycd")
+
+[node name="Sprite3D3" type="Sprite3D" parent="KenneyExhibit" unique_id=1270011741]
+transform = Transform3D(0.0005702247, 0, -0.1349988, 0, 0.135, 0, 0.1349988, 0, 0.0005702247, 0, 0.42333364, -0.2997676)
+texture = ExtResource("5_272bh")
+
+[node name="Sprite3D4" type="Sprite3D" parent="KenneyExhibit" unique_id=2041802440]
+transform = Transform3D(0.0005702247, 0, -0.1349988, 0, 0.135, 0, 0.1349988, 0, 0.0005702247, 0, 0.42333364, 1.5162319)
+texture = ExtResource("6_272bh")
+
+[node name="Sprite3D5" type="Sprite3D" parent="KenneyExhibit" unique_id=873215653]
+transform = Transform3D(0.0005702247, 0, -0.1349988, 0, 0.135, 0, 0.1349988, 0, 0.0005702247, 0, 0.42333364, 3.317059)
+texture = ExtResource("7_5vw27")
+
+[node name="Label3D" type="Label3D" parent="KenneyExhibit" unique_id=1997217270]
+transform = Transform3D(-0.00049789995, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -0.00049789995, 0, 1.3870344, 0)
+text = "kenney.nl/assets/prototype-textures"
+font = ExtResource("8_5vw27")
