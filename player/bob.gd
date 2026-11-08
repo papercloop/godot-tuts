@@ -36,7 +36,6 @@ func setBob(on_node: Node3D, mode: String) -> void:
 
 
 func getBobLocation(on_node: Node3D, _delta: float, moving: bool, lerp_speed: float) -> Vector2:
-	prints("moving: ", moving)
 	index += current_speed * _delta
 
 	bobbing_vector.y = sin(index)

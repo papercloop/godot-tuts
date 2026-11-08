@@ -8,6 +8,7 @@ extends CharacterBody3D
 @onready var crouching_collision_shape: CollisionShape3D = $CrouchingCollisionShape
 @onready var standup_check: RayCast3D = $StandupCheck
 @onready var headbob: Bob = Bob.new()
+@onready var interaction_controller: Node = %InteractionController
 
 # Movement variables
 const walking_speed: float = 3.0
@@ -53,9 +54,10 @@ func _input(event: InputEvent) -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 	if event is InputEventMouseMotion:
-		rotate_y(deg_to_rad(-event.relative.x) * mouse_sensitivity)
-		head.rotate_x(deg_to_rad(-event.relative.y) * mouse_sensitivity)
-		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-85), deg_to_rad(85))
+		if not interaction_controller.is_camera_locked():
+			rotate_y(deg_to_rad(-event.relative.x) * mouse_sensitivity)
+			head.rotate_x(deg_to_rad(-event.relative.y) * mouse_sensitivity)
+			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-85), deg_to_rad(85))
 
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:

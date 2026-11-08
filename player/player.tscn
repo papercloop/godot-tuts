@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ctnhp07prrw0i"]
 
 [ext_resource type="Script" uid="uid://cs2pfw0vi0moc" path="res://player/player.gd" id="1_oul6g"]
+[ext_resource type="PackedScene" uid="uid://bnuytvyjhdstt" path="res://interaction/interaction_controller.tscn" id="2_rkbax"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_eku1s"]
 
@@ -24,7 +25,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 [node name="Eyes" type="Node3D" parent="Head" unique_id=2059599625]
 
 [node name="Camera3D" type="Camera3D" parent="Head/Eyes" unique_id=1598905999]
+unique_name_in_owner = true
 fov = 90.0
+
+[node name="InteractionRaycast" type="RayCast3D" parent="Head/Eyes/Camera3D" unique_id=611930615]
+unique_name_in_owner = true
+target_position = Vector3(0, 0, -2)
+
+[node name="Hand" type="Marker3D" parent="Head/Eyes/Camera3D" unique_id=1383379367]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 
 [node name="StandupCheck" type="RayCast3D" parent="." unique_id=1995150577]
 target_position = Vector3(0, 2, 0)
+
+[node name="InteractionController" parent="." unique_id=1576903948 instance=ExtResource("2_rkbax")]
+unique_name_in_owner = true
