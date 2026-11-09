@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://we5oiq2sp7jg"]
+
+[ext_resource type="PackedScene" uid="uid://oy8ajewk2akc" path="res://interaction/interaction_component.tscn" id="1_45fdq"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_eku1s"]
+size = Vector3(0.1, 0.8, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p7e0t"]
+albedo_color = Color(1, 1, 0.14117648, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hwsm6"]
+size = Vector3(0.1, 0.8, 0.1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_eku1s"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.11
+
+[node name="PivotPoint" type="Node3D" unique_id=1106182093]
+
+[node name="Wheel" type="StaticBody3D" parent="." unique_id=270175014]
+
+[node name="InteractionComponent" parent="Wheel" unique_id=1968299739 node_paths=PackedStringArray("object_ref") instance=ExtResource("1_45fdq")]
+object_ref = NodePath("..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wheel" unique_id=1560081964]
+mesh = SubResource("BoxMesh_eku1s")
+surface_material_override/0 = SubResource("StandardMaterial3D_p7e0t")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wheel" unique_id=1335653259]
+shape = SubResource("BoxShape3D_hwsm6")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Wheel" unique_id=2127647739]
+transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_eku1s")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Wheel" unique_id=800403116]
+transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_hwsm6")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Wheel" unique_id=1099882621]
+transform = Transform3D(0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_eku1s")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Wheel" unique_id=1711053649]
+transform = Transform3D(0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_hwsm6")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Wheel" unique_id=2039550738]
+transform = Transform3D(0, -0.99999994, 0, 0.99999994, 0, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_eku1s")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Wheel" unique_id=654733474]
+transform = Transform3D(0, -0.99999994, 0, 0.99999994, 0, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_hwsm6")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Wheel" unique_id=1482322074]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_eku1s")

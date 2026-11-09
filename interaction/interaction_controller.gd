@@ -39,10 +39,10 @@ func _process(delta: float) -> void:
 
 				if Input.is_action_pressed("primary"):
 					current_object = potential_object
-					interaction_component.preInteract(player_hand)
+					interaction_component.preInteract(player_hand, player_camera)
 					
+					# This kind of feels like it should live in the interaction_component? Like interaction_controller shouldn't care what type of object it's interacting with?
 					if interaction_component.interaction_type == interaction_component.InteractionType.DOOR:
-						prints("set_direction should be firing")
 						interaction_component.set_direction(current_object.to_local(interaction_raycast.get_collision_point()))
 						
 
