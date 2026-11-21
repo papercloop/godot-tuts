@@ -4,6 +4,12 @@ extends Node
 @onready var interaction_raycast: RayCast3D = %InteractionRaycast
 @onready var player_camera: Camera3D = %Camera3D
 @onready var player_hand: Marker3D = %Hand
+@onready var default_reticle: TextureRect = %DefaultReticle
+@onready var highlight_reticle: TextureRect = %HighlightReticle
+@onready var interacting_reticle: TextureRect = %InteractingReticle
+@onready var interactable_check: Area3D = %InteractableCheck
+
+@onready var outline_material: Material = preload("res://materials/outline.tres")
 
 var current_object: Object # we are already interacting with this.
 
@@ -11,7 +17,17 @@ var last_potential_object: Object # last thing we could possibly have been inter
 
 var interaction_component: Node
 
+func _ready() -> void:
+	interactable_check.body_entered.connect(_on_body_entered)
+	interactable_check.body_exited.connect(_on_body_exited)
+
+
 func _process(delta: float) -> void:
+
+	if interaction_component and interaction_component.is_interacting:
+		default_reticle.visible = false
+		highlight_reticle.visible = false
+		interacting_reticle.visible = true
 
 	# if on previous frame we were interacting with an object, we want to keep interacting with it.
 	if current_object: 
@@ -19,11 +35,13 @@ func _process(delta: float) -> void:
 			if Input.is_action_just_pressed("secondary"):
 				interaction_component.auxInteract()
 				current_object = null
+				_unfocus()
 			elif Input.is_action_pressed("primary"):
 				interaction_component.interact()
 			else:
 				interaction_component.postInteract()
 				current_object = null
+				_unfocus()
 
 	# if on previous frame we were not interacting with an object, let's see if we can.
 	else:
@@ -36,14 +54,20 @@ func _process(delta: float) -> void:
 					return
 
 				last_potential_object = current_object
+				_focus()
 
-				if Input.is_action_pressed("primary"):
+				if Input.is_action_just_pressed("primary"):
 					current_object = potential_object
 					interaction_component.preInteract(player_hand, player_camera)
+
+					if interaction_component.interaction_type == interaction_component.InteractionType.ITEM:
+						interaction_component.connect("item_collected", Callable(self, "_on_item_collected"))
 					
 					# This kind of feels like it should live in the interaction_component? Like interaction_controller shouldn't care what type of object it's interacting with?
 					if interaction_component.interaction_type == interaction_component.InteractionType.DOOR:
 						interaction_component.set_direction(current_object.to_local(interaction_raycast.get_collision_point()))
+		else:
+			_unfocus()
 						
 
 func is_camera_locked() -> bool:
@@ -52,7 +76,62 @@ func is_camera_locked() -> bool:
 			return true
 	return false
 
+func _focus() -> void:
+	default_reticle.visible = false
+	highlight_reticle.visible = true
+	interacting_reticle.visible = false
+
+func _unfocus() -> void:
+	default_reticle.visible = true
+	highlight_reticle.visible = false
+	interacting_reticle.visible = false
+
+func _on_item_collected(item: Node):
+	# Inventory system
+	prints("Player collected:", item)
+
+func _on_body_entered(body: Node3D) -> void:
+	if body.name != "Player":
+		var name = body.name
+		var ic = body.get_node_or_null("InteractionComponent")
+
+		if ic and ic.interaction_type == ic.InteractionType.ITEM:
+			print("body entered")
+			var mesh: MeshInstance3D = body.find_child("MeshInstance3D", true, false)
+			mesh.material_overlay = outline_material
+
+func _on_body_exited(body: Node3D) -> void:
+	if body.name != "Player":
+		var ic = body.get_node_or_null("InteractionComponent")
+
+		if ic and ic.interaction_type == ic.InteractionType.ITEM:
+			print("body exited")
+			var mesh: MeshInstance3D = body.find_child("MeshInstance3D", true, false)
+			mesh.material_overlay = null
+		return
+	
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		

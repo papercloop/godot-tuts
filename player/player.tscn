@@ -2,11 +2,17 @@
 
 [ext_resource type="Script" uid="uid://cs2pfw0vi0moc" path="res://player/player.gd" id="1_oul6g"]
 [ext_resource type="PackedScene" uid="uid://bnuytvyjhdstt" path="res://interaction/interaction_controller.tscn" id="2_rkbax"]
+[ext_resource type="Texture2D" uid="uid://cog5rken22o30" path="res://assets/reticles/dot_small.png" id="3_qjkh3"]
+[ext_resource type="Texture2D" uid="uid://d21fx8h6vy8r8" path="res://assets/reticles/tile_0158.png" id="4_g6k8r"]
+[ext_resource type="Texture2D" uid="uid://clspdt02vdc3u" path="res://assets/reticles/tile_0159.png" id="5_boad6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_eku1s"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hwsm6"]
 height = 1.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_eku1s"]
+radius = 3.0
 
 [node name="Player" type="CharacterBody3D" unique_id=1648918138]
 script = ExtResource("1_oul6g")
@@ -41,3 +47,55 @@ target_position = Vector3(0, 2, 0)
 
 [node name="InteractionController" parent="." unique_id=1576903948 instance=ExtResource("2_rkbax")]
 unique_name_in_owner = true
+
+[node name="GUI" type="Node" parent="." unique_id=1741914251]
+
+[node name="ReticleLayer" type="CanvasLayer" parent="GUI" unique_id=126936830]
+
+[node name="Control" type="Control" parent="GUI/ReticleLayer" unique_id=1496365069]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="GUI/ReticleLayer/Control" unique_id=280629993]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DefaultReticle" type="TextureRect" parent="GUI/ReticleLayer/Control/CenterContainer" unique_id=809255979]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("3_qjkh3")
+stretch_mode = 3
+
+[node name="HighlightReticle" type="TextureRect" parent="GUI/ReticleLayer/Control/CenterContainer" unique_id=1937229482]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("4_g6k8r")
+stretch_mode = 3
+
+[node name="InteractingReticle" type="TextureRect" parent="GUI/ReticleLayer/Control/CenterContainer" unique_id=482743408]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+texture = ExtResource("5_boad6")
+stretch_mode = 3
+
+[node name="InteractableCheck" type="Area3D" parent="." unique_id=33856108]
+unique_name_in_owner = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableCheck" unique_id=1750823713]
+shape = SubResource("SphereShape3D_eku1s")

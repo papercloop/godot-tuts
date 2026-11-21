@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://56ubj0ejwbj1"]
 
+[ext_resource type="PackedScene" uid="uid://2w2s7jp1jrwf" path="res://objects/item.tscn" id="1_cegan"]
 [ext_resource type="Texture2D" uid="uid://2hwncca02f2y" path="res://assets/KenneyPrototypeTextures/Dark/texture_13.png" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://ctnhp07prrw0i" path="res://player/player.tscn" id="1_kek77"]
 [ext_resource type="Texture2D" uid="uid://bf4sdh3imv3pj" path="res://assets/KenneyPrototypeTextures/Light/texture_13.png" id="2_0xm2m"]
@@ -84,6 +85,12 @@ uv1_triplanar = true
 size = Vector3(0.99, 0.79, 0.99)
 
 [node name="Sandbox" type="Node3D" unique_id=2112397449]
+
+[node name="Item" parent="." unique_id=1162407229 instance=ExtResource("1_cegan")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6620464, 0.9415579, -2)
+
+[node name="Item2" parent="." unique_id=667959735 instance=ExtResource("1_cegan")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.404916, 0.94155777, -2.2335684)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1269758178]
 environment = SubResource("Environment_efxa6")
@@ -172,6 +179,12 @@ double_sided = false
 text = "rotate
 wheel"
 
+[node name="Label3D" type="Label3D" parent="Floor2/StaticBody3D/Label3D" unique_id=820763589]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.7307609, 0)
+text = "todo: nicer animation
+on wheel"
+font_size = 18
+
 [node name="PivotPoint" type="Node3D" parent="Floor2" unique_id=421672030]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.024199963, 0.1401403, -32.18052)
 script = ExtResource("5_074og")
@@ -259,7 +272,7 @@ font = ExtResource("8_5vw27")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1723523, 0.49635983, -0.10030508)
 
 [node name="cube_5kg" parent="." unique_id=1392401296 instance=ExtResource("11_efxa6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3670077, 3.4963598, -5.4008484)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3670077, 0.49635935, -0.5940733)
 
 [node name="Door" parent="." unique_id=1794146749 instance=ExtResource("12_dg77c")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7, 0, 6.6246414)

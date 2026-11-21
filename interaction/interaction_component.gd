@@ -7,7 +7,8 @@ enum InteractionType {
 	DOOR,
 	SWITCH,
 	WHEEL,
-	}
+	ITEM,
+}
 
 @export var object_ref: Node3D
 @export var interaction_type: InteractionType = InteractionType.DEFAULT
@@ -26,6 +27,9 @@ var lock_camera: bool = false
 var starting_rotation: float
 var is_front: bool
 var wheel_rotation: float = 0.0
+
+# Signals
+signal item_collected(item: Node)
 
 func _ready() -> void:
 	match interaction_type:
@@ -67,6 +71,8 @@ func interact() -> void:
 	match interaction_type:
 		InteractionType.DEFAULT:
 			_default_interact()
+		InteractionType.ITEM:
+			_collect_item()
 
 
 func auxInteract() -> void:
@@ -170,9 +176,10 @@ func calculate_cross_product(_mouse_position: Vector2) -> float:
 	var center_position = camera.unproject_position(object_ref.global_transform.origin)
 	var vector_to_prev = previous_mouse_position - center_position
 	var vector_to_current = _mouse_position - center_position
-	var cross_product = vector_to_current.x * vector_to_prev.y - vector_to_current.y * vector_to_prev.x
 	# if comes back negative, counter clockwise. if positive, clockwise.
-	prints("cross product var", cross_product)
-	var cross = vector_to_prev.cross(vector_to_current)
-	prints("cross method", cross)
+	var cross_product = vector_to_current.cross(vector_to_prev)
 	return cross_product
+
+func _collect_item() -> void:
+	emit_signal("item_collected", get_parent())
+	get_parent().queue_free()

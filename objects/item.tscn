@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://2w2s7jp1jrwf"]
+
+[ext_resource type="PackedScene" uid="uid://oy8ajewk2akc" path="res://interaction/interaction_component.tscn" id="1_oqx7i"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_eku1s"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p7e0t"]
+albedo_color = Color(0.55, 0.55, 0.55, 1)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hwsm6"]
+height = 0.3
+radius = 0.1
+
+[node name="Item" type="RigidBody3D" unique_id=1162407229]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1742433950]
+mesh = SubResource("CylinderMesh_eku1s")
+surface_material_override/0 = SubResource("StandardMaterial3D_p7e0t")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1725382231]
+shape = SubResource("CylinderShape3D_hwsm6")
+
+[node name="InteractionComponent" parent="." unique_id=1968299739 node_paths=PackedStringArray("object_ref") instance=ExtResource("1_oqx7i")]
+object_ref = NodePath("..")
+interaction_type = 4
