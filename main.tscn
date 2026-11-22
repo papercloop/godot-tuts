@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://4jyp4yi7ukii" path="res://assets/KenneyPrototypeTextures/Dark/texture_05.png" id="13_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://oy8ajewk2akc" path="res://interaction/interaction_component.tscn" id="14_2cqfq"]
 [ext_resource type="Script" uid="uid://g2a5kppiqn6m" path="res://scripts/light.gd" id="16_yaehf"]
+[ext_resource type="Texture2D" uid="uid://cj2d7i1ta0bjd" path="res://assets/KenneyPrototypeTextures/Purple/texture_12.png" id="17_82xsv"]
 [ext_resource type="Texture2D" uid="uid://buboueb0j7cym" path="res://assets/KenneyPrototypeTextures/Dark/texture_06.png" id="17_yaehf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kek77"]
@@ -67,6 +68,16 @@ uv1_triplanar = true
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1bvp3"]
 albedo_texture = ExtResource("2_0xm2m")
 uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_getpj"]
+size = Vector3(1.6, 2.6, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4hvcy"]
+albedo_texture = ExtResource("17_82xsv")
+uv1_triplanar = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eku1s"]
+size = Vector3(1.6, 2.6, 0.1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_yaehf"]
 size = Vector3(0.1, 0.7, 0.1)
@@ -277,8 +288,36 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3670077, 0.49635935, -0.594
 [node name="Door" parent="." unique_id=1794146749 instance=ExtResource("12_dg77c")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7, 0, 6.6246414)
 
-[node name="Door2" parent="." unique_id=77529617 instance=ExtResource("12_dg77c")]
+[node name="Door2" type="Node3D" parent="." unique_id=77529617]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 1.8635125, -0.0036401749, 10.5364065)
+
+[node name="PivotPoint" type="Node3D" parent="Door2" unique_id=917784031]
+unique_name_in_owner = true
+
+[node name="Door" type="StaticBody3D" parent="Door2/PivotPoint" unique_id=1137449930]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Door2/PivotPoint/Door" unique_id=1016804745]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 1.33, 0)
+mesh = SubResource("BoxMesh_getpj")
+surface_material_override/0 = SubResource("StandardMaterial3D_4hvcy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Door2/PivotPoint/Door" unique_id=793840331]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 1.33, 0)
+shape = SubResource("BoxShape3D_eku1s")
+
+[node name="InteractionComponent" parent="Door2/PivotPoint/Door" unique_id=1005361008 node_paths=PackedStringArray("object_ref", "pivot_point") instance=ExtResource("14_2cqfq")]
+object_ref = NodePath("..")
+interaction_type = 1
+maximum_rotation = 181.0
+pivot_point = NodePath("../..")
+
+[node name="front" type="Label3D" parent="Door2/PivotPoint/Door" unique_id=1814581866]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9531387, 1.739352, 0.05907762)
+text = "front"
+
+[node name="back" type="Label3D" parent="Door2/PivotPoint/Door" unique_id=986600489]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0.9531387, 1.739352, -0.06400567)
+text = "back"
 
 [node name="Door3" parent="." unique_id=2034046490 instance=ExtResource("12_dg77c")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -3.3179684, -0.0036401749, 10.378168)
@@ -287,16 +326,17 @@ transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -3.3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.718, 0, 0)
 
 [node name="Switch2" parent="Podium" unique_id=755653516 instance=ExtResource("13_w48qg")]
-transform = Transform3D(-2.3841858e-07, 0, -1, 0.86624825, 0.49961442, -2.9802322e-08, 0.49961448, -0.8662479, -1.4901161e-08, -0.0013284683, 1.3147429, -0.5003345)
+transform = Transform3D(-2.3841858e-07, 0, -1, 0.58579457, 0.8104599, -2.1090107e-08, 0.8104602, -0.5857942, -2.5795941e-08, -0.0013284683, 1.3147429, -0.5003345)
 
 [node name="Switch" type="Node3D" parent="Podium" unique_id=330144254]
 transform = Transform3D(0.7932178, -0.608938, 0, 0.608938, 0.7932178, 0, 0, 0, 1, -0.5143156, 1.5436021, 0)
 
 [node name="Switch" type="StaticBody3D" parent="Podium/Switch" unique_id=1998592196]
 
-[node name="InteractionComponent" parent="Podium/Switch/Switch" unique_id=66887865 node_paths=PackedStringArray("object_ref") instance=ExtResource("14_2cqfq")]
+[node name="InteractionComponent" parent="Podium/Switch/Switch" unique_id=66887865 node_paths=PackedStringArray("object_ref", "nodes_to_affect") instance=ExtResource("14_2cqfq")]
 object_ref = NodePath("..")
 interaction_type = 2
+nodes_to_affect = [NodePath("../../../SpotLight3D")]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Podium/Switch/Switch" unique_id=1507697604]
 mesh = SubResource("BoxMesh_yaehf")
@@ -328,7 +368,6 @@ shadow_enabled = true
 shadow_transmittance_bias = -1.321
 shadow_blur = 6.446
 script = ExtResource("16_yaehf")
-binary = false
 
 [node name="ButtonPodium" type="StaticBody3D" parent="." unique_id=287269722]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6413965, 0, -2.0196986)

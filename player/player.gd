@@ -25,7 +25,11 @@ const jump_velocity: float = 4.0
 const lerp_speed: float = 10.0
 
 # Player Settings
-var mouse_sensitivity: float = 0.2
+var normal_sensitivity: float = 0.2
+var current_sensitivity: float = normal_sensitivity
+var sensitivity_restore_speed: float = 5.0
+var sensitivity_fading_in: bool = false
+
 var base_fov = 90.0
 
 
@@ -54,9 +58,9 @@ func _input(event: InputEvent) -> void:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 	if event is InputEventMouseMotion:
-		if not interaction_controller.is_camera_locked():
-			rotate_y(deg_to_rad(-event.relative.x) * mouse_sensitivity)
-			head.rotate_x(deg_to_rad(-event.relative.y) * mouse_sensitivity)
+		if current_sensitivity > 0.01 and not interaction_controller.is_camera_locked():
+			rotate_y(deg_to_rad(-event.relative.x) * current_sensitivity)
+			head.rotate_x(deg_to_rad(-event.relative.y) * current_sensitivity)
 			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-85), deg_to_rad(85))
 
 	if event is InputEventMouseButton and event.pressed:
@@ -66,6 +70,16 @@ func _input(event: InputEvent) -> void:
 				get_viewport().warp_mouse(Vector2(viewport_size.x / 2, viewport_size.y / 2))
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
+func _process(delta: float) -> void:
+	if sensitivity_fading_in:
+		print("sensitivity fading in")
+		current_sensitivity = lerp(current_sensitivity, normal_sensitivity, delta * sensitivity_restore_speed)
+
+		if abs(current_sensitivity - normal_sensitivity) < 0.01:
+			sensitivity_fading_in = false
+			current_sensitivity = normal_sensitivity
+
+	set_camera_locked(interaction_controller.is_camera_locked())
 
 
 
@@ -178,3 +192,12 @@ func updateCamera(_delta: float) -> void:
 	var headbobPosition = headbob.getBobLocation(eyes, _delta, moving, lerp_speed)
 	eyes.position.x = headbobPosition.x
 	eyes.position.y = headbobPosition.y
+
+
+func set_camera_locked(locked: bool) -> void:
+	if locked:
+		current_sensitivity = 0.0
+		sensitivity_fading_in = false
+	else:
+		sensitivity_fading_in = true
+		

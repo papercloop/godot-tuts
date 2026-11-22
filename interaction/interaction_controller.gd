@@ -9,7 +9,7 @@ extends Node
 @onready var interacting_reticle: TextureRect = %InteractingReticle
 @onready var interactable_check: Area3D = %InteractableCheck
 
-@onready var outline_material: Material = preload("res://materials/outline.tres")
+@onready var outline_material: Material = preload("res://materials/highlight.tres")
 
 var current_object: Object # we are already interacting with this.
 
@@ -31,6 +31,12 @@ func _process(delta: float) -> void:
 
 	# if on previous frame we were interacting with an object, we want to keep interacting with it.
 	if current_object: 
+		if  player_camera.global_transform.origin.distance_to(current_object.global_transform.origin) > 3.0:
+			if interaction_component:
+				interaction_component.postInteract()
+			current_object = null
+			_unfocus()
+
 		if interaction_component:
 			if Input.is_action_just_pressed("secondary"):
 				interaction_component.auxInteract()
@@ -49,7 +55,9 @@ func _process(delta: float) -> void:
 
 		if potential_object and potential_object is Node:
 			interaction_component = potential_object.get_node_or_null("InteractionComponent")
-			if interaction_component: 
+			if !interaction_component: 
+				_unfocus()
+			else:
 				if !interaction_component.can_interact:
 					return
 

@@ -28,6 +28,19 @@ var starting_rotation: float
 var is_front: bool
 var wheel_rotation: float = 0.0
 
+# Door variables
+var door_angle: float = 0.0
+var door_velocity: float = 0.0
+@export var door_smoothing: float = 80.0 # control how heavy the door feels
+var door_input_active: bool = false
+
+# Switch variables
+var switch_target_rotation: float = 0.0
+
+# Wheel variables
+var wheel_kickback: float = 0.0
+var wheel_kick_intensity: float = 0.1
+
 # Signals
 signal item_collected(item: Node)
 
@@ -43,6 +56,30 @@ func _ready() -> void:
 			starting_rotation = object_ref.rotation.z
 			maximum_rotation = deg_to_rad(rad_to_deg(starting_rotation) + maximum_rotation)
 
+func _process(delta: float) -> void:
+	match interaction_type:
+		InteractionType.DOOR:
+			if not door_input_active:
+				door_velocity = lerp(door_velocity, 0.0, delta * 4.0)
+
+			door_angle += door_velocity
+			door_angle = clamp(door_angle, starting_rotation, maximum_rotation)
+			pivot_point.rotation.y = door_angle
+			door_input_active = false
+
+		InteractionType.WHEEL:
+			if abs(wheel_kickback) > 0.01:
+				wheel_rotation += wheel_kickback
+				wheel_kickback = lerp(wheel_kickback, 0.0, delta * 6.0)
+					
+				# don't let wheel over-turn
+				var min_wheel_rotation = starting_rotation / 0.1
+				var max_wheel_rotation = maximum_rotation / 0.1
+				wheel_rotation = clamp(wheel_rotation, min_wheel_rotation, max_wheel_rotation)
+
+				object_ref.rotation.z = wheel_rotation * 0.1
+				var percentage: float = snappedf((object_ref.rotation.z - starting_rotation) / (maximum_rotation - starting_rotation), 0.01)
+				notify_nodes(percentage)
 
 
 
@@ -61,7 +98,6 @@ func preInteract(hand: Marker3D, _camera: Camera3D) -> void:
 			previous_mouse_position = get_viewport().get_mouse_position()
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			camera = _camera
-
 
 
 # run every frame, perform some logic on this object
@@ -90,18 +126,52 @@ func postInteract() -> void:
 	lock_camera = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
+	match interaction_type:
+		InteractionType.SWITCH:
+			var percentage: float = snappedf((object_ref.rotation.z - starting_rotation) / (maximum_rotation - starting_rotation), 0.01)
+			if percentage < 0.3:
+				switch_target_rotation = starting_rotation
+				var tween = get_tree().create_tween()
+				tween.tween_property(object_ref, "rotation:z", switch_target_rotation, 0.2) \
+						.set_trans(Tween.TRANS_BOUNCE) \
+						.set_ease(Tween.EASE_OUT)
+				tween.tween_callback( func():
+					percentage = snappedf((object_ref.rotation.z - starting_rotation) / (maximum_rotation - starting_rotation), 0.01)
+					notify_nodes(percentage)
+				)
+
+			elif percentage > 0.7:
+				switch_target_rotation = maximum_rotation
+				var tween = get_tree().create_tween()
+				tween.tween_property(object_ref, "rotation:z", switch_target_rotation, 0.2) \
+						.set_trans(Tween.TRANS_BOUNCE) \
+						.set_ease(Tween.EASE_OUT)
+				tween.tween_callback( func(): 
+					percentage = snappedf((object_ref.rotation.z - starting_rotation) / (maximum_rotation - starting_rotation), 0.01)
+					notify_nodes(percentage)
+				)
+
+		InteractionType.WHEEL:
+			wheel_kickback = -sign(wheel_rotation) * wheel_kick_intensity
+
+
+
 
 func _input(event: InputEvent) -> void:
 	if is_interacting:
 		match interaction_type: 
 			InteractionType.DOOR:
 				if event is InputEventMouseMotion:
-					if is_front: 
-						pivot_point.rotate_y(-event.relative.y * .001)
-					else: 
-						pivot_point.rotate_y(event.relative.y * .001)
+					door_input_active = true
+					var delta: float = -event.relative.y * 0.001
+					
+					if not is_front:
+						delta = -delta
 
-					pivot_point.rotation.y = clamp(pivot_point.rotation.y, starting_rotation, maximum_rotation)
+					if abs(delta) < 0.01:
+						delta *= 0.25
+
+					door_velocity = lerp(door_velocity, delta, 1.0 / door_smoothing)
 			
 			InteractionType.SWITCH:
 				if event is InputEventMouseMotion:
@@ -123,6 +193,11 @@ func _input(event: InputEvent) -> void:
 					var percentage: float = snappedf((object_ref.rotation.z - starting_rotation) / (maximum_rotation - starting_rotation), 0.01)
 
 					previous_mouse_position = mouse_position
+
+					# don't let wheel over-turn
+					var min_wheel_rotation = starting_rotation / 0.1
+					var max_wheel_rotation = maximum_rotation / 0.1
+					wheel_rotation = clamp(wheel_rotation, min_wheel_rotation, max_wheel_rotation)
 
 					notify_nodes(percentage)
 
@@ -168,7 +243,7 @@ func set_direction(_normal: Vector3) -> void:
 
 func notify_nodes(percentage: float) -> void:
 	for node in nodes_to_affect:
-		if node.has_method("execute"):
+		if node and node.has_method("execute"):
 			node.call("execute", percentage)
 
 
